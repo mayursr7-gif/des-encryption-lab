@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical DES encryption and decryption demonstration using CryptoJS.">
+  <title>DES Encryption and Decryption System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="DES Encryption home">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span><strong>DES</strong><small>Encryption Lab</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="active" href="#home">Home</a>
+        <a href="#encryption">Encryption</a>
+        <a href="#decryption">Decryption</a>
+        <a href="#how-it-works">How DES Works</a>
+        <a href="#about">About</a>
+      </nav>
+      <div class="status-pill"><span class="status-dot"></span>Local &amp; private</div>
+      <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">Menu</button>
+    </header>
+
+    <main>
+      <section id="home" class="hero section-wrap">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-line"></span>DATA ENCRYPTION STANDARD / 1977</p>
+          <h1>Turn readable data into <em>secure</em> bytes.</h1>
+          <p class="hero-text">A focused, interactive workspace for exploring DES encryption and decryption with CBC mode, PKCS7 padding, and an 8-byte key.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#encryption">Start encrypting <span aria-hidden="true">&#8594;</span></a>
+            <a class="text-link" href="#how-it-works">Explore the process <span aria-hidden="true">&#8599;</span></a>
+          </div>
+          <div class="hero-metrics" aria-label="System specifications">
+            <div><strong>64</strong><span>bit block size</span></div>
+            <div><strong>16</strong><span>Feistel rounds</span></div>
+            <div><strong>CBC</strong><span>block cipher mode</span></div>
+          </div>
+        </div>
+        <div class="hero-visual reveal delay-1" aria-label="Encryption visualization">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="visual-core"><span class="core-lock" aria-hidden="true">&#9632;</span><strong>DES</strong><small>SECURE TRANSFORM</small></div>
+          <div class="signal signal-a"><span>PLAINTEXT</span><b>HELLO WORLD</b></div>
+          <div class="signal signal-b"><span>CIPHERTEXT</span><b>6D 5F 3A 81</b></div>
+          <div class="visual-tag tag-a">01 / CBC</div><div class="visual-tag tag-b">64 BIT</div>
+        </div>
+      </section>
+
+      <section class="workspace section-wrap" aria-label="Encryption workspace">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow"><span class="eyebrow-line"></span>INTERACTIVE WORKSPACE</p><h2>Encrypt. Decrypt. Verify.</h2></div>
+          <button id="clear-all" class="button ghost" type="button"><span aria-hidden="true">&#8635;</span> Clear workspace</button>
+        </div>
+
+        <div class="crypto-grid">
+          <article id="encryption" class="crypto-card encrypt-card reveal">
+            <div class="card-top"><div class="card-icon">01</div><div><p class="card-kicker">Encryption</p><h3>Plaintext to ciphertext</h3></div><span class="card-arrow" aria-hidden="true">&#8599;</span></div>
+            <p class="card-description">Enter a message and transform it into a Base64 ciphertext string.</p>
+            <form id="encrypt-form" novalidate>
+              <label for="encrypt-text">Plaintext <span class="required">*</span></label>
+              <textarea id="encrypt-text" rows="3" placeholder="Type the message to encrypt...">HELLO WORLD</textarea>
+              <div class="field-row">
+                <div><label for="encrypt-key">Secret key <span class="required">*</span></label><div class="input-wrap"><input id="encrypt-key" type="text" value="12345678" maxlength="8" autocomplete="off"><span class="char-count" data-count-for="encrypt-key">8/8</span></div></div>
+                <div><label for="encrypt-iv">Initialization vector <span class="required">*</span></label><div class="input-wrap"><input id="encrypt-iv" type="text" value="12345678" maxlength="8" autocomplete="off"><span class="char-count" data-count-for="encrypt-iv">8/8</span></div></div>
+              </div>
+              <button class="button primary full" type="submit">Encrypt message <span aria-hidden="true">&#8594;</span></button>
+            </form>
+            <div class="output-panel"><div class="output-label"><span>Encrypted output / Base64</span><button class="copy-button" data-copy="encrypt-output" type="button" disabled>Copy</button></div><output id="encrypt-output" class="output-value empty">Your ciphertext will appear here</output></div>
+          </article>
+
+          <article id="decryption" class="crypto-card decrypt-card reveal delay-1">
+            <div class="card-top"><div class="card-icon">02</div><div><p class="card-kicker">Decryption</p><h3>Ciphertext to plaintext</h3></div><span class="card-arrow" aria-hidden="true">&#8599;</span></div>
+            <p class="card-description">Reverse the process with the matching key and initialization vector.</p>
+            <form id="decrypt-form" novalidate>
+              <label for="decrypt-text">Ciphertext / Base64 <span class="required">*</span></label>
+              <textarea id="decrypt-text" rows="3" placeholder="Paste your Base64 ciphertext..."></textarea>
+              <div class="field-row">
+                <div><label for="decrypt-key">Secret key <span class="required">*</span></label><div class="input-wrap"><input id="decrypt-key" type="text" value="12345678" maxlength="8" autocomplete="off"><span class="char-count" data-count-for="decrypt-key">8/8</span></div></div>
+                <div><label for="decrypt-iv">Initialization vector <span class="required">*</span></label><div class="input-wrap"><input id="decrypt-iv" type="text" value="12345678" maxlength="8" autocomplete="off"><span class="char-count" data-count-for="decrypt-iv">8/8</span></div></div>
+              </div>
+              <button class="button secondary full" type="submit">Decrypt message <span aria-hidden="true">&#8594;</span></button>
+            </form>
+            <div class="output-panel"><div class="output-label"><span>Decrypted output / Plaintext</span><button class="copy-button" data-copy="decrypt-output" type="button" disabled>Copy</button></div><output id="decrypt-output" class="output-value empty">Your plaintext will appear here</output></div>
+          </article>
+        </div>
+        <div class="sample-strip reveal"><span class="sample-icon">i</span><span><strong>Quick test case</strong> The fields are pre-filled with <code>HELLO WORLD</code>, key <code>12345678</code>, and IV <code>12345678</code>. Encrypt, then send the result to decryption.</span><button id="use-sample" class="text-link" type="button">Reset sample <span aria-hidden="true">&#8635;</span></button></div>
+      </section>
+
+      <section id="how-it-works" class="process-section section-wrap">
+        <div class="section-heading reveal"><div><p class="eyebrow"><span class="eyebrow-line"></span>UNDER THE HOOD</p><h2>How DES works</h2></div><span class="section-note">A block cipher, one transformation at a time.</span></div>
+        <div class="process-layout">
+          <div class="process-list reveal">
+            <div class="process-step active"><span class="step-number">01</span><div><h3>Initial permutation</h3><p>Each 64-bit plaintext block is rearranged using a fixed permutation table, splitting the block into left and right halves.</p></div><span class="step-mark">+</span></div>
+            <div class="process-step"><span class="step-number">02</span><div><h3>Key generation</h3><p>The 64-bit key is permuted, split, and shifted to produce sixteen unique 48-bit round keys.</p></div><span class="step-mark">+</span></div>
+            <div class="process-step"><span class="step-number">03</span><div><h3>16 Feistel rounds</h3><p>Expansion, key mixing, substitution, and permutation transform the right half in every round.</p></div><span class="step-mark">+</span></div>
+            <div class="process-step"><span class="step-number">04</span><div><h3>Final permutation</h3><p>After the sixteenth round, the two halves are recombined and the inverse permutation forms the ciphertext block.</p></div><span class="step-mark">+</span></div>
+            <div class="process-step"><span class="step-number">05</span><div><h3>Decryption process</h3><p>DES decryption runs the same Feistel structure with the sixteen generated keys in reverse order.</p></div><span class="step-mark">+</span></div>
+          </div>
+          <div class="diagram-card reveal delay-1"><div class="diagram-header"><span>BLOCK FLOW</span><span class="live-dot">LIVE MODEL</span></div><div class="diagram"><div class="diagram-block source">64-bit<br><strong>INPUT</strong></div><span class="diagram-arrow">&#8594;</span><div class="diagram-block purple">INITIAL<br><strong>PERMUTE</strong></div><span class="diagram-arrow">&#8594;</span><div class="round-stack"><span>R01</span><span>R02</span><span>R03</span><span>...</span><span>R16</span></div><span class="diagram-arrow">&#8594;</span><div class="diagram-block teal">FINAL<br><strong>PERMUTE</strong></div><span class="diagram-arrow">&#8594;</span><div class="diagram-block source">64-bit<br><strong>OUTPUT</strong></div></div><div class="diagram-footer"><span><i class="legend purple-dot"></i>Permutation</span><span><i class="legend teal-dot"></i>Feistel network</span><span><i class="legend white-dot"></i>Data block</span></div></div>
+        </div>
+      </section>
+
+      <section id="about" class="about-section section-wrap reveal"><div class="about-copy"><p class="eyebrow"><span class="eyebrow-line"></span>PROJECT NOTES</p><h2>A compact study of classic cryptography.</h2><p>This demonstration makes the DES pipeline tangible: inputs stay in your browser, keys are never transmitted, and each result can be copied into the matching operation for verification.</p></div><div class="about-meta"><div><span>ALGORITHM</span><strong>DES / CBC</strong></div><div><span>PADDING</span><strong>PKCS7</strong></div><div><span>OUTPUT</span><strong>BASE64</strong></div><div><span>RUNTIME</span><strong>CLIENT-SIDE</strong></div></div></section>
+    </main>
+
+    <footer class="footer section-wrap"><span>DES Encryption Lab <span class="muted">/ Computer Science Project</span></span><span>Built for learning cryptographic fundamentals.</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"><span class="toast-icon">&#10003;</span><span id="toast-message">Done</span></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
